@@ -1,22 +1,19 @@
 import 'react-native-reanimated'
 import '@/styles/globals.css'
-
-
-
 import { useFonts } from 'expo-font'
-import { Rubik_400Regular, Rubik_500Medium, Rubik_600SemiBold, Rubik_700Bold, Rubik_800ExtraBold, Rubik_900Black } from '@expo-google-fonts/rubik'
+import {
+  Rubik_400Regular,
+  Rubik_500Medium,
+  Rubik_600SemiBold,
+  Rubik_700Bold,
+  Rubik_800ExtraBold,
+  Rubik_900Black,
+} from '@expo-google-fonts/rubik'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
+import { StatusBar } from 'react-native'
 
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router'
-
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
@@ -26,7 +23,7 @@ export default function RootLayout() {
     Rubik_600SemiBold,
     Rubik_700Bold,
     Rubik_800ExtraBold,
-    Rubik_900Black
+    Rubik_900Black,
   })
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -44,5 +41,14 @@ export default function RootLayout() {
     return null
   }
 
-  return <Stack />
+  return (
+    <>
+      <Stack screenOptions={{ headerShown: false }} />
+      <StatusBar
+        barStyle="dark-content"
+        translucent
+        backgroundColor="transparent"
+      />
+    </>
+  )
 }

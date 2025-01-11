@@ -1,39 +1,52 @@
-import { StatusBar } from 'expo-status-bar'
-import { Platform, StyleSheet } from 'react-native'
+import images from '@/constants/images'
+import { Image, ScrollView, View, Text, TouchableOpacity } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
-import EditScreenInfo from '@/components/EditScreenInfo'
-import { Text, View } from '@/components/Themed'
+import icons from '@/constants/icons'
 
-export default function ModalScreen() {
+const SignInScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="app/modal.tsx" />
+    <SafeAreaView className="bg-white h-full">
+      <ScrollView contentContainerClassName="h-full">
+        <Image
+          alt=""
+          resizeMode="cover"
+          source={images.onboarding}
+          className="w-full h-4/6"
+        />
 
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-    </View>
+        <View className="px-10">
+          <Text className="text-base text-center uppercase font-rubik text-black-200">
+            Bem Vindo
+          </Text>
+
+          <Text className="text-3xl text-center font-rubik-bold text-black-300 mt-2">
+            Encontre o seu {'\n'}
+            <Text className="text-primary-300">Imóvel Perfeito</Text>
+          </Text>
+
+          <Text className="text-lg text-center mt-12 font-rubik text-black-200">
+            Acesse com uma conta Google
+          </Text>
+
+          <TouchableOpacity className="w-full mt-5 py-4 bg-white shadow-md shadow-zinc-300 rounded-full">
+            <View className="flex-row items-center justify-center gap-2 ">
+              <Image
+                alt=""
+                source={icons.google}
+                className="w-5 h-5"
+                resizeMode="contain"
+              />
+
+              <Text className="text-lg font-rubik-medium text-black-300">
+                Entrar com Google
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-})
+export default SignInScreen
