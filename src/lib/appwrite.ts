@@ -1,61 +1,72 @@
-import { Client, Avatars, Account, OAuthProvider } from 'react-native-appwrite'
+import {
+  Client,
+  Account,
+  ID,
+  Databases,
+  OAuthProvider,
+  Avatars,
+  Query,
+  Storage,
+} from 'react-native-appwrite'
 import * as Linking from 'expo-linking'
 import { openAuthSessionAsync } from 'expo-web-browser'
 
-const appWriteConfig = {
-  platform: 'com.zer0nze.imob',
+export const config = {
+  platform: 'com.jsm.restate',
   endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
   projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
+  galleriesCollectionId:
+    process.env.EXPO_PUBLIC_APPWRITE_GALLERIES_COLLECTION_ID,
+  reviewsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID,
+  agentsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_AGENTS_COLLECTION_ID,
+  propertiesCollectionId:
+    process.env.EXPO_PUBLIC_APPWRITE_PROPERTIES_COLLECTION_ID,
+  bucketId: process.env.EXPO_PUBLIC_APPWRITE_BUCKET_ID,
 }
 
-const appWriteClient = new Client()
+export const client = new Client()
+client
+  .setEndpoint(config.endpoint!)
+  .setProject(config.projectId!)
+  .setPlatform(config.platform!)
 
-appWriteClient
-  .setPlatform(appWriteConfig.platform!)
-  .setProject(appWriteConfig.projectId!)
-  .setEndpoint(appWriteConfig.endpoint!)
-
-const appWriteAvatar = new Avatars(appWriteClient)
-const appWriteAccount = new Account(appWriteClient)
+export const avatar = new Avatars(client)
+export const account = new Account(client)
+export const databases = new Databases(client)
+export const storage = new Storage(client)
 
 const signInWithGoogle = async () => {
   try {
-    const redirectURL = Linking.createURL('/')
-    const response = await appWriteAccount.createOAuth2Session(
+    const redirectUri = Linking.createURL('/')
+
+    const response = await account.createOAuth2Token(
       OAuthProvider.Google,
-      redirectURL,
+      redirectUri,
     )
 
-    if (!response) {
-      throw new Error('Failed to sign in with Google')
-    }
+    console.log(response)
 
-    const browserResponse = await openAuthSessionAsync(
+    if (!response) throw new Error('Create OAuth2 token failed')
+
+    const browserResult = await openAuthSessionAsync(
       response.toString(),
-      redirectURL,
+      redirectUri,
     )
+    if (browserResult.type !== 'success')
+      throw new Error('Create OAuth2 token failed')
 
-    if (browserResponse.type !== 'success') {
-      throw new Error('Failed to sign in with Google')
-    }
-
-    const url = new URL(browserResponse.url)
+    const url = new URL(browserResult.url)
     const secret = url.searchParams.get('secret')?.toString()
     const userId = url.searchParams.get('userId')?.toString()
+    if (!secret || !userId) throw new Error('Create OAuth2 token failed')
 
-    if (!secret || !userId) {
-      throw new Error('Failed to sign in with Google')
-    }
-
-    const session = await appWriteAccount.createSession(secret, userId)
-
-    if (!session) {
-      throw new Error('Failed to sign in with Google')
-    }
+    const session = await account.createSession(userId, secret)
+    if (!session) throw new Error('Failed to create session')
 
     return true
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return false
   }
 }
@@ -87,12 +98,4 @@ const getUser = async () => {
   }
 }
 
-export {
-  appWriteConfig,
-  appWriteClient,
-  appWriteAvatar,
-  appWriteAccount,
-  signInWithGoogle,
-  signOut,
-  getUser,
-}
+export { signInWithGoogle, signOut, getUser }

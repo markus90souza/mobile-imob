@@ -13,6 +13,7 @@ import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import React, { useEffect } from 'react'
 import { StatusBar } from 'react-native'
+import { AppwriteProvider } from '@/contexts/appwriter-context'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -42,13 +43,13 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <AppwriteProvider>
       <Stack screenOptions={{ headerShown: false }} />
       <StatusBar
         barStyle="dark-content"
         translucent
         backgroundColor="transparent"
       />
-    </>
+    </AppwriteProvider>
   )
 }

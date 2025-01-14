@@ -1,10 +1,36 @@
 import images from '@/constants/images'
-import { Image, ScrollView, View, Text, TouchableOpacity } from 'react-native'
+import {
+  Image,
+  ScrollView,
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import icons from '@/constants/icons'
-
+import { signInWithGoogle } from '@/lib/appwrite'
+import { useAppwriteContext } from '@/contexts/appwriter-context'
+import { Redirect } from 'expo-router'
 const SignInScreen = () => {
+  const { refetch, loading, isLogged } = useAppwriteContext()
+
+  if (!loading && isLogged) {
+    return <Redirect href="/" />
+  }
+
+  const handleSignInWithGoogle = async () => {
+    const response = await signInWithGoogle()
+
+    console.log(response)
+
+    if (response) {
+      refetch()
+    } else {
+      Alert.alert('Error', 'Failed to sign in with Google')
+    }
+  }
   return (
     <SafeAreaView className="bg-white h-full">
       <ScrollView contentContainerClassName="h-full">
@@ -29,7 +55,10 @@ const SignInScreen = () => {
             Acesse com uma conta Google
           </Text>
 
-          <TouchableOpacity className="w-full mt-5 py-4 bg-white shadow-md shadow-zinc-300 rounded-full">
+          <TouchableOpacity
+            onPress={handleSignInWithGoogle}
+            className="w-full mt-5 py-4 bg-white shadow-md shadow-zinc-300 rounded-full"
+          >
             <View className="flex-row items-center justify-center gap-2 ">
               <Image
                 alt=""

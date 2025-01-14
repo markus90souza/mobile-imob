@@ -69,35 +69,35 @@ export const categories = [
 
 export const settings = [
   {
-    title: 'My Bookings',
+    title: 'Agendamentos',
     icon: icons.calendar,
   },
   {
-    title: 'Payments',
+    title: 'Pagamentos',
     icon: icons.wallet,
   },
   {
-    title: 'Profile',
+    title: 'Perfil',
     icon: icons.person,
   },
   {
-    title: 'Notifications',
+    title: 'Notificações',
     icon: icons.bell,
   },
   {
-    title: 'Security',
+    title: 'Segurança',
     icon: icons.shield,
   },
   {
-    title: 'Language',
+    title: 'Idioma',
     icon: icons.language,
   },
   {
-    title: 'Help Center',
+    title: 'Ajuda',
     icon: icons.info,
   },
   {
-    title: 'Invite Friends',
+    title: 'Convinde amigos',
     icon: icons.people,
   },
 ]

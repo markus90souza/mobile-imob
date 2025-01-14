@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "mobile-mob",
-    "slug": "mobile-mob",
+    "name": "Imob",
+    "slug": "mobile-imob",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "imob",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
